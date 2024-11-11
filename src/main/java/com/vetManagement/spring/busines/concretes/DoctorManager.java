@@ -1,6 +1,8 @@
 package com.vetManagement.spring.busines.concretes;
 
 import com.vetManagement.spring.busines.abstracts.IDoctorService;
+import com.vetManagement.spring.core.config.Msg;
+import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.DoctorRepository;
 import com.vetManagement.spring.entity.Doctor;
@@ -17,10 +19,25 @@ public class DoctorManager implements IDoctorService {
 
     @Override
     public Doctor save(Doctor doctor) {
-        if (doctorRepository.findByName(doctor.getName()) != null){
-            throw new recordAlreadyExistException(doctorRepository.findByName(doctor.getName()).getId());
-        }
+       Doctor existingDoctor = doctorRepository.findByName(doctor.getName());
+
+       if (existingDoctor != null) {
+       throw  new recordAlreadyExistException(existingDoctor.getId());
+       }
         doctor.setId(null);
-        return doctorRepository.save(doctor);
+       return doctorRepository.save(doctor);
+    }
+
+    @Override
+    public Doctor get(Long id) {
+        return this.doctorRepository.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
     }
 }
+
+
+
+
+
+
+
+
