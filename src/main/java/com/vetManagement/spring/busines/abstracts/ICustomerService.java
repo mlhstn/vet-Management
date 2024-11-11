@@ -6,4 +6,6 @@ import com.vetManagement.spring.entity.Customer;
 public interface ICustomerService {
 
     Customer save(Customer customer);
+    boolean existsByCustomerName(String name);
+    Customer get(Long id);
 }

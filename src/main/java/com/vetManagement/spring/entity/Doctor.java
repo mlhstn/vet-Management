@@ -29,14 +29,12 @@ public class Doctor {
 
     private String city;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<AvailableDate> availableDates = new HashSet<>();
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 
-    @OneToMany(mappedBy = "doctor")
-    private Set<Animal> animals = new HashSet<>();
 
 
 }

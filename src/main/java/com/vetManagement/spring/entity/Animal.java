@@ -1,6 +1,8 @@
 package com.vetManagement.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,10 +32,11 @@ public class Animal {
 
     private String colour;
 
+    @Temporal(TemporalType.DATE)
     private LocalDate dateOfBirth;
 
-    @ManyToOne // Her hayvanın bir müşteriye ait olduğunu belirtir
-    @JoinColumn(name = "customer_id") // Bağlantı kolonu
+    @ManyToOne
+    @JoinColumn(name = "customer_id")  // Foreign key
     private Customer customer;
 
     @ManyToMany
@@ -44,10 +47,7 @@ public class Animal {
     )
     private Set<Vaccine> vaccines = new HashSet<>();
 
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Appointment> appointments = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
 }

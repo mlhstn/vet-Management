@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DoctorManager implements IDoctorService {
 
-    DoctorRepository doctorRepository;
+  private final DoctorRepository doctorRepository;
 
     public DoctorManager(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
