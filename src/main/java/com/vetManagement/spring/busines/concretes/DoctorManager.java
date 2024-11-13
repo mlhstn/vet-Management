@@ -5,7 +5,11 @@ import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.DoctorRepository;
+import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Doctor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +35,12 @@ public class DoctorManager implements IDoctorService {
     @Override
     public Doctor get(Long id) {
         return this.doctorRepository.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
+    }
+
+    @Override
+    public Page<Doctor> cursor(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        return this.doctorRepository.findAll(pageable);
     }
 }
 

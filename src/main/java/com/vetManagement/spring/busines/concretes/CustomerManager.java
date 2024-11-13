@@ -5,7 +5,11 @@ import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.CustomerRepository;
+import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +33,12 @@ public class CustomerManager implements ICustomerService {
     @Override
     public boolean existsByCustomerName(String customerName) {
         return customerRepository.existsByCustomerName(customerName);
+    }
+
+    @Override
+    public Page<Customer> cursor(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        return this.customerRepository.findAll(pageable);
     }
 
     @Override
