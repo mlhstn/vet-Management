@@ -1,22 +1,19 @@
 package com.vetManagement.spring.controller;
 
 import com.vetManagement.spring.busines.abstracts.ICustomerService;
-import com.vetManagement.spring.busines.concretes.CustomerManager;
+import com.vetManagement.spring.core.config.Result;
 import com.vetManagement.spring.core.config.ResultData;
 import com.vetManagement.spring.core.config.ResultHelper;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
-import com.vetManagement.spring.core.modelMapper.ModelMapperConfig;
-import com.vetManagement.spring.dto.request.Animal.AnimalSaveRequest;
 import com.vetManagement.spring.dto.request.Customer.CustomerSaveRequest;
-import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
+import com.vetManagement.spring.dto.request.Customer.CustomerUpdateRequest;
 import com.vetManagement.spring.dto.response.CursorResponse;
 import com.vetManagement.spring.dto.response.Customer.CustomerResponse;
-import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Customer;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +70,24 @@ public class CustomerController {
         Page<CustomerResponse> customerResponsePage = customerPage
                 .map(customer -> this.modelMapper.map(customer,CustomerResponse.class));
         return ResultHelper.cursor(customerResponsePage);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<CustomerResponse> update(@Valid @RequestBody CustomerUpdateRequest customerUpdateRequest){
+
+        Customer updateCustomer = this.modelMapper.map(customerUpdateRequest, Customer.class);
+        this.iCustomerService.update(updateCustomer);
+        return ResultHelper.success(this.modelMapper.map(updateCustomer, CustomerResponse.class));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") Long id){
+
+        this.iCustomerService.delete(id);
+        return ResultHelper.ok();
+
     }
 
 

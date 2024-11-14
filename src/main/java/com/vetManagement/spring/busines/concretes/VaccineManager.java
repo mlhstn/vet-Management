@@ -41,4 +41,17 @@ public class VaccineManager implements IVaccineService {
         Pageable pageable = PageRequest.of(page,pageSize);
         return this.vaccineRepository.findAll(pageable);
     }
+
+    @Override
+    public Vaccine update(Vaccine vaccine) {
+        this.get(vaccine.getId());
+        return this.vaccineRepository.save(vaccine);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        Vaccine vaccine = this.get(id);
+        this.vaccineRepository.delete(vaccine);
+        return true;
+    }
 }

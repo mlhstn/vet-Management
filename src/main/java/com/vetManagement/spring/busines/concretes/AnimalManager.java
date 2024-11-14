@@ -58,4 +58,18 @@ public class AnimalManager implements IAnimalService {
         return this.animalRepository.findAll(pageable);
     }
 
+    @Override
+    public Animal update(Animal animal) {
+        this.get(animal.getId());
+        return this.animalRepository.save(animal);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+
+        Animal animal = this.get(id);
+        this.animalRepository.delete(animal);
+        return true;
+    }
+
 }

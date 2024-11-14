@@ -9,4 +9,5 @@ public interface AnimalRepository extends JpaRepository<Animal,Long> {
     Animal findByName(String name);
     boolean existsByName(String name);
 
+
 }

@@ -1,10 +1,9 @@
 package com.vetManagement.spring.controller;
 
 import com.vetManagement.spring.busines.abstracts.IAnimalService;
-import com.vetManagement.spring.core.config.Msg;
+import com.vetManagement.spring.core.config.Result;
 import com.vetManagement.spring.core.config.ResultData;
 import com.vetManagement.spring.core.config.ResultHelper;
-import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.CustomerRepository;
 import com.vetManagement.spring.dto.request.Animal.AnimalSaveRequest;
@@ -12,9 +11,7 @@ import com.vetManagement.spring.dto.request.Animal.AnimalUpdateRequest;
 import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.dto.response.CursorResponse;
 import com.vetManagement.spring.entity.Animal;
-import com.vetManagement.spring.entity.Customer;
 import jakarta.validation.Valid;
-import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -78,6 +75,26 @@ public class AnimalController {
                 .map(animal -> this.modelMapper.map(animal,AnimalResponse.class));
         return ResultHelper.cursor(animalResponsePage);
     }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<AnimalResponse> update(@Valid @RequestBody AnimalUpdateRequest animalUpdateRequest){
+
+        Animal updateAnimal = this.modelMapper.map(animalUpdateRequest, Animal.class);
+        this.iAnimalService.update(updateAnimal);
+        return ResultHelper.success(this.modelMapper.map(updateAnimal, AnimalResponse.class));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") Long id){
+
+       this.iAnimalService.delete(id);
+       return ResultHelper.ok();
+
+    }
+
+
 }
 
 

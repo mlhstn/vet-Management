@@ -46,4 +46,19 @@ public class CustomerManager implements ICustomerService {
 
         return this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
     }
+
+    @Override
+    public Customer update(Customer customer) {
+        this.get(customer.getId());
+        return this.customerRepository.save(customer);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        Customer customer = this.get(id);
+        this.customerRepository.delete(customer);
+        return true;
+    }
+
+
 }

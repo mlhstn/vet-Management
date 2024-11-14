@@ -42,6 +42,19 @@ public class DoctorManager implements IDoctorService {
         Pageable pageable = PageRequest.of(page,pageSize);
         return this.doctorRepository.findAll(pageable);
     }
+
+    @Override
+    public Doctor update(Doctor doctor) {
+        this.get(doctor.getId());
+        return this.doctorRepository.save(doctor);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        Doctor doctor = this.get(id);
+        this.doctorRepository.delete(doctor);
+        return true;
+    }
 }
 
 

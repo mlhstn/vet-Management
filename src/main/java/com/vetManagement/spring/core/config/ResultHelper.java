@@ -27,7 +27,6 @@ public class ResultHelper {
     }
 
 
-
     public static Result ok(){
         return new Result("200", Msg.OK, true);
     }

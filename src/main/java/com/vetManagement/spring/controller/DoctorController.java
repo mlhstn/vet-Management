@@ -1,21 +1,22 @@
 package com.vetManagement.spring.controller;
 
 import com.vetManagement.spring.busines.abstracts.IDoctorService;
-import com.vetManagement.spring.busines.concretes.DoctorManager;
+import com.vetManagement.spring.core.config.Result;
 import com.vetManagement.spring.core.config.ResultData;
 import com.vetManagement.spring.core.config.ResultHelper;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
-import com.vetManagement.spring.core.modelMapper.ModelMapperConfig;
+import com.vetManagement.spring.dto.request.Animal.AnimalUpdateRequest;
 import com.vetManagement.spring.dto.request.Doctor.DoctorSaveRequest;
+import com.vetManagement.spring.dto.request.Doctor.DoctorUpdateRequest;
 import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.dto.response.CursorResponse;
 import com.vetManagement.spring.dto.response.Doctor.DoctorResponse;
 import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Doctor;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +73,24 @@ public class DoctorController {
         Page<DoctorResponse> doctorResponsePage = doctorPage
                 .map(doctor -> this.modelMapper.map(doctor,DoctorResponse.class));
         return ResultHelper.cursor(doctorResponsePage);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<DoctorResponse> update(@Valid @RequestBody DoctorUpdateRequest doctorUpdateRequest){
+
+        Doctor updateDoctor = this.modelMapper.map(doctorUpdateRequest, Doctor.class);
+        this.iDoctorService.update(updateDoctor);
+        return ResultHelper.success(this.modelMapper.map(updateDoctor, DoctorResponse.class));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") Long id){
+
+        this.iDoctorService.delete(id);
+        return ResultHelper.ok();
+
     }
 
 }
