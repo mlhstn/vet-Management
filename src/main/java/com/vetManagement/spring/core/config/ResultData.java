@@ -1,5 +1,6 @@
 package com.vetManagement.spring.core.config;
 
+import com.fasterxml.jackson.core.ErrorReportConfiguration;
 import lombok.Getter;
 
 @Getter
@@ -10,4 +11,6 @@ public class ResultData<T> extends Result {
         super(code, message, status);
         this.data = data;
     }
+
+
 }

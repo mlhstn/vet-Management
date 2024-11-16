@@ -1,7 +1,10 @@
 package com.vetManagement.spring.busines.abstracts;
 
+import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.entity.Animal;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface IAnimalService {
 
@@ -16,5 +19,7 @@ public interface IAnimalService {
     Animal update(Animal animal);
 
     boolean delete(Long id);
+
+    public List<AnimalResponse> getAllAnimalsSorted();
 
 }

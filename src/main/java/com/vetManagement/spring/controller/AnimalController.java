@@ -15,8 +15,11 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/animals")
@@ -92,6 +95,12 @@ public class AnimalController {
        this.iAnimalService.delete(id);
        return ResultHelper.ok();
 
+    }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<AnimalResponse>> getAllAnimalsSorted() {
+        List<AnimalResponse> sortedAnimals = iAnimalService.getAllAnimalsSorted();
+        return ResponseEntity.ok(sortedAnimals);
     }
 
 

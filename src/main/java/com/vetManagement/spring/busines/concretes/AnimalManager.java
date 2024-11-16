@@ -5,12 +5,16 @@ import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.AnimalRepository;
+import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.entity.Animal;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnimalManager implements IAnimalService {
@@ -70,6 +74,25 @@ public class AnimalManager implements IAnimalService {
         Animal animal = this.get(id);
         this.animalRepository.delete(animal);
         return true;
+    }
+
+    @Override
+    public List<AnimalResponse> getAllAnimalsSorted() {
+
+        List<Animal> animals = animalRepository.findAllByOrderByNameAsc(); // animalName'e göre sıralama
+
+        // Animal entity'lerini AnimalResponse DTO'suna dönüştürüyoruz
+        return animals.stream()
+                .map(animal -> new AnimalResponse(
+                        animal.getId(),
+                        animal.getName(),
+                        animal.getSpecies(),
+                        animal.getBreed(),
+                        animal.getGender(),
+                        animal.getColour(),
+                        animal.getDateOfBirth()
+                ))
+                .collect(Collectors.toList());
     }
 
 }

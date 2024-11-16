@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collector;
 
 @Data
 @AllArgsConstructor
@@ -24,4 +26,6 @@ public class AnimalResponse {
     private String colour;
 
     private LocalDate dateOfBirth;
+
+
 }
