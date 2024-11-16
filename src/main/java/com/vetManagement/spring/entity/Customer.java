@@ -31,7 +31,7 @@ public class Customer {
 
     private String city;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     private List<Animal> animalList;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

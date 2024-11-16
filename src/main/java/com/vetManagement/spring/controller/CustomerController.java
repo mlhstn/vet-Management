@@ -7,9 +7,12 @@ import com.vetManagement.spring.core.config.ResultHelper;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dto.request.Customer.CustomerSaveRequest;
 import com.vetManagement.spring.dto.request.Customer.CustomerUpdateRequest;
+import com.vetManagement.spring.dto.request.Doctor.DoctorSaveRequest;
 import com.vetManagement.spring.dto.response.CursorResponse;
 import com.vetManagement.spring.dto.response.Customer.CustomerResponse;
+import com.vetManagement.spring.dto.response.Doctor.DoctorResponse;
 import com.vetManagement.spring.entity.Customer;
+import com.vetManagement.spring.entity.Doctor;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -31,7 +34,7 @@ public class CustomerController {
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResultData<CustomerResponse> saveCustomer(@RequestBody @Validated CustomerSaveRequest customerSaveRequest) {
+    public ResultData<CustomerResponse> saveCustomer(@RequestBody @Validated CustomerSaveRequest customerSaveRequest){
 
         Customer customer = modelMapper.map(customerSaveRequest, Customer.class);
 
@@ -42,11 +45,10 @@ public class CustomerController {
 
             return ResultHelper.created(customerResponse);
 
-        }catch(recordAlreadyExistException e){
-
+        }catch (recordAlreadyExistException e){
             Customer existingCustomer = iCustomerService.get(e.getId());
 
-            CustomerResponse existingCustomerResponse = this.modelMapper.map(existingCustomer, CustomerResponse.class);
+            CustomerResponse existingCustomerResponse  = this.modelMapper.map(existingCustomer, CustomerResponse.class);
 
             return ResultHelper.recordAlreadyExistsError(e.getId(), existingCustomerResponse);
         }

@@ -24,7 +24,8 @@ public class CustomerManager implements ICustomerService {
     @Override
     public Customer save(Customer customer) {
         if (customerRepository.findByCustomerName(customer.getCustomerName()) != null){
-            throw new recordAlreadyExistException(customer.getId());
+
+            throw new recordAlreadyExistException(customerRepository.findByCustomerName(customer.getCustomerName()).getId());
         }
         customer.setId(null);
         return customerRepository.save(customer);
