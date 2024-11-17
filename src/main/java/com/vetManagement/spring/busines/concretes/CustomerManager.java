@@ -5,20 +5,29 @@ import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.CustomerRepository;
+import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
+import com.vetManagement.spring.dto.response.CursorResponse;
+import com.vetManagement.spring.dto.response.Customer.CustomerResponse;
 import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Customer;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CustomerManager implements ICustomerService {
 
     private  final CustomerRepository customerRepository;
+    private final ModelMapper modelMapper;
 
-    public CustomerManager(CustomerRepository customerRepository) {
+    public CustomerManager(CustomerRepository customerRepository,  ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -61,5 +70,23 @@ public class CustomerManager implements ICustomerService {
         return true;
     }
 
+    @Override
+    public List<CustomerResponse> getAllCustomersSorted() {
+        // Müşterileri customerName'e göre sıralıyoruz
+        List<Customer> customers = customerRepository.findAllByOrderByCustomerNameAsc();
+
+        // Sıralanmış müşteri listesini CustomerResponse formatında döndürüyoruz
+        return customers.stream()
+                .map(customer -> new CustomerResponse(
+                        customer.getId(),
+                        customer.getCustomerName(),
+                        customer.getPhone(),
+                        customer.getMail(),
+                        customer.getAddress(),
+                        customer.getCity(),
+                        null // Hayvan listesi olmadığı için null
+                ))
+                .collect(Collectors.toList());
+    }
 
 }

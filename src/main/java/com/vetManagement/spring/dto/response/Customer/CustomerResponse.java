@@ -1,7 +1,6 @@
 package com.vetManagement.spring.dto.response.Customer;
 
 import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

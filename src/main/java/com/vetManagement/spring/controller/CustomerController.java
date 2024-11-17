@@ -8,6 +8,7 @@ import com.vetManagement.spring.core.config.exception.recordAlreadyExistExceptio
 import com.vetManagement.spring.dto.request.Customer.CustomerSaveRequest;
 import com.vetManagement.spring.dto.request.Customer.CustomerUpdateRequest;
 import com.vetManagement.spring.dto.request.Doctor.DoctorSaveRequest;
+import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.dto.response.CursorResponse;
 import com.vetManagement.spring.dto.response.Customer.CustomerResponse;
 import com.vetManagement.spring.dto.response.Doctor.DoctorResponse;
@@ -17,8 +18,11 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -90,6 +94,12 @@ public class CustomerController {
         this.iCustomerService.delete(id);
         return ResultHelper.ok();
 
+    }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<CustomerResponse>> getAllCustomersSorted() {
+        List<CustomerResponse> sortedCustomers = iCustomerService.getAllCustomersSorted();
+        return ResponseEntity.ok(sortedCustomers);
     }
 
 

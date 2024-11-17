@@ -1,8 +1,13 @@
 package com.vetManagement.spring.busines.abstracts;
 
+import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
+import com.vetManagement.spring.dto.response.CursorResponse;
+import com.vetManagement.spring.dto.response.Customer.CustomerResponse;
 import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Customer;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface ICustomerService {
 
@@ -17,4 +22,6 @@ public interface ICustomerService {
     Customer update(Customer customer);
 
     boolean delete(Long id);
+
+    public List<CustomerResponse> getAllCustomersSorted();
 }
