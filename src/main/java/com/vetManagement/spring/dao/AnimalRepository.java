@@ -9,9 +9,11 @@ import java.util.Optional;
 public interface AnimalRepository extends JpaRepository<Animal,Long> {
 
     Animal findByName(String name);
+
     boolean existsByName(String name);
 
     List<Animal> findAllByOrderByNameAsc();
 
 
+    List<Animal> findByCustomerId(Long id);
 }

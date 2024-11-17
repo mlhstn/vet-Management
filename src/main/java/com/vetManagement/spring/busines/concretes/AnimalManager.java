@@ -95,4 +95,23 @@ public class AnimalManager implements IAnimalService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<AnimalResponse> getAnimalsByCustomerId(Long id) {
+
+        List<Animal> animals = animalRepository.findByCustomerId(id);
+
+        return animals.stream().map(animal -> new AnimalResponse(
+                animal.getId(),
+                animal.getName(),
+                animal.getSpecies(),
+                animal.getGender(),
+                animal.getBreed(),
+                animal.getColour(),
+                animal.getDateOfBirth()))
+                .collect(Collectors.toList());
+    }
+
 }
+
+
+

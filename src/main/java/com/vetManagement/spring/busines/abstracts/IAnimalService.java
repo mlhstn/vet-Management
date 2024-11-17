@@ -22,4 +22,5 @@ public interface IAnimalService {
 
     public List<AnimalResponse> getAllAnimalsSorted();
 
+    List<AnimalResponse> getAnimalsByCustomerId(Long id);
 }

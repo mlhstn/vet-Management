@@ -103,6 +103,15 @@ public class AnimalController {
         return ResponseEntity.ok(sortedAnimals);
     }
 
+    @GetMapping("customers/{id}")
+    public ResultData<List<AnimalResponse>> getAnimalsByCustomerId(@PathVariable Long id){
+
+        List<AnimalResponse> responses = iAnimalService.getAnimalsByCustomerId(id);
+        return ResultHelper.ok(responses);
+    }
+
+
+
 
 }
 
