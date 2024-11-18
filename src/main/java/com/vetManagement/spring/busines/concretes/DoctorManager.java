@@ -5,12 +5,13 @@ import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.DoctorRepository;
-import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Doctor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DoctorManager implements IDoctorService {
@@ -55,6 +56,9 @@ public class DoctorManager implements IDoctorService {
         this.doctorRepository.delete(doctor);
         return true;
     }
+
+    public List<Doctor> getAllDoctors() {
+        return doctorRepository.findAll(); }
 }
 
 

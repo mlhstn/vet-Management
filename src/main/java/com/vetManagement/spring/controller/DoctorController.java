@@ -1,5 +1,6 @@
 package com.vetManagement.spring.controller;
 
+import com.vetManagement.spring.busines.abstracts.IAvailableDateService;
 import com.vetManagement.spring.busines.abstracts.IDoctorService;
 import com.vetManagement.spring.core.config.Result;
 import com.vetManagement.spring.core.config.ResultData;
@@ -12,6 +13,7 @@ import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.dto.response.CursorResponse;
 import com.vetManagement.spring.dto.response.Doctor.DoctorResponse;
 import com.vetManagement.spring.entity.Animal;
+import com.vetManagement.spring.entity.AvailableDate;
 import com.vetManagement.spring.entity.Doctor;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -20,17 +22,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/doctors")
 public class DoctorController {
 
     private final IDoctorService iDoctorService;
     private final ModelMapper modelMapper;
+    private final IAvailableDateService iAvailableDateService;
 
 
-    public DoctorController(IDoctorService iDoctorService, ModelMapper modelMapper) {
+    public DoctorController(IDoctorService iDoctorService, ModelMapper modelMapper, IAvailableDateService iAvailableDateService) {
         this.iDoctorService = iDoctorService;
         this.modelMapper = modelMapper;
+        this.iAvailableDateService = iAvailableDateService;
     }
 
     @PostMapping("/save")
@@ -92,5 +98,13 @@ public class DoctorController {
         return ResultHelper.ok();
 
     }
+
+    @PostMapping("/{doctorId}/availableDates") @ResponseStatus(HttpStatus.CREATED)
+    public AvailableDate addAvailableDate(@PathVariable("doctorId") Long doctorId, @RequestBody LocalDate availableDate) {
+        Doctor doctor = this.iDoctorService.get(doctorId);
+        AvailableDate newAvailableDate = new AvailableDate();
+        newAvailableDate.setAvailableDate(availableDate);
+        newAvailableDate.setDoctor(doctor);
+        return iAvailableDateService.save(newAvailableDate); }
 
 }

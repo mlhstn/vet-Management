@@ -4,6 +4,8 @@ import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Doctor;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface IDoctorService {
 
     Doctor save(Doctor doctor);
@@ -15,4 +17,6 @@ public interface IDoctorService {
     Doctor update(Doctor doctor);
 
     boolean delete(Long id);
+
+    List<Doctor> getAllDoctors();
 }

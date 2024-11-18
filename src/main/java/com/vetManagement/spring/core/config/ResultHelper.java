@@ -35,6 +35,9 @@ public class ResultHelper {
         return new Result("404", Msg.NOT_FOUND, false);
     }
 
+    public static Result notFoundError() {
+        return new Result("404", Msg.NOT_FOUND, false);
+    }
 
     public static Result notAvailableError() {
         return new Result("400", Msg.NOT_AVAILABLE_ERROR, false);
