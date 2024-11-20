@@ -6,6 +6,7 @@ import com.vetManagement.spring.core.config.Result;
 import com.vetManagement.spring.core.config.ResultData;
 import com.vetManagement.spring.core.config.ResultHelper;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
+import com.vetManagement.spring.core.modelMapper.ImodelMapperService;
 import com.vetManagement.spring.dto.request.Animal.AnimalUpdateRequest;
 import com.vetManagement.spring.dto.request.Doctor.DoctorSaveRequest;
 import com.vetManagement.spring.dto.request.Doctor.DoctorUpdateRequest;
@@ -29,33 +30,33 @@ import java.time.LocalDate;
 public class DoctorController {
 
     private final IDoctorService iDoctorService;
-    private final ModelMapper modelMapper;
     private final IAvailableDateService iAvailableDateService;
+    private final ImodelMapperService modelMapper;
 
 
-    public DoctorController(IDoctorService iDoctorService, ModelMapper modelMapper, IAvailableDateService iAvailableDateService) {
+    public DoctorController(IDoctorService iDoctorService, IAvailableDateService iAvailableDateService, ImodelMapperService modelMapper) {
         this.iDoctorService = iDoctorService;
-        this.modelMapper = modelMapper;
         this.iAvailableDateService = iAvailableDateService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<DoctorResponse> saveDoctor(@RequestBody @Validated DoctorSaveRequest doctorSaveRequest){
 
-        Doctor doctor = modelMapper.map(doctorSaveRequest, Doctor.class);
+        Doctor doctor = modelMapper.forRequest().map(doctorSaveRequest, Doctor.class);
 
         try {
             Doctor savedDoctor = iDoctorService.save(doctor);
 
-            DoctorResponse doctorResponse = this.modelMapper.map(savedDoctor, DoctorResponse.class);
+            DoctorResponse doctorResponse = this.modelMapper.forResponse().map(savedDoctor, DoctorResponse.class);
 
             return ResultHelper.created(doctorResponse);
 
         }catch (recordAlreadyExistException e){
             Doctor existingDoctor = iDoctorService.get(e.getId());
 
-            DoctorResponse existingDoctorResponse  = this.modelMapper.map(existingDoctor, DoctorResponse.class);
+            DoctorResponse existingDoctorResponse  = this.modelMapper.forResponse().map(existingDoctor, DoctorResponse.class);
 
             return ResultHelper.recordAlreadyExistsError(e.getId(), existingDoctorResponse);
         }
@@ -65,7 +66,7 @@ public class DoctorController {
     public ResultData<DoctorResponse> get(@PathVariable("id") Long id) {
 
         Doctor doctor = this.iDoctorService.get(id);
-        DoctorResponse doctorResponse = this.modelMapper.map(doctor,DoctorResponse.class);
+        DoctorResponse doctorResponse = this.modelMapper.forResponse().map(doctor,DoctorResponse.class);
         return ResultHelper.success(doctorResponse);
     }
 
@@ -77,7 +78,7 @@ public class DoctorController {
     ) {
         Page<Doctor> doctorPage = this.iDoctorService.cursor(page,pageSize);
         Page<DoctorResponse> doctorResponsePage = doctorPage
-                .map(doctor -> this.modelMapper.map(doctor,DoctorResponse.class));
+                .map(doctor -> this.modelMapper.forResponse().map(doctor,DoctorResponse.class));
         return ResultHelper.cursor(doctorResponsePage);
     }
 
@@ -85,9 +86,9 @@ public class DoctorController {
     @ResponseStatus(HttpStatus.OK)
     public ResultData<DoctorResponse> update(@Valid @RequestBody DoctorUpdateRequest doctorUpdateRequest){
 
-        Doctor updateDoctor = this.modelMapper.map(doctorUpdateRequest, Doctor.class);
+        Doctor updateDoctor = this.modelMapper.forRequest().map(doctorUpdateRequest, Doctor.class);
         this.iDoctorService.update(updateDoctor);
-        return ResultHelper.success(this.modelMapper.map(updateDoctor, DoctorResponse.class));
+        return ResultHelper.success(this.modelMapper.forResponse().map(updateDoctor, DoctorResponse.class));
     }
 
     @DeleteMapping("/{id}")

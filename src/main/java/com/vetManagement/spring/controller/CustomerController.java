@@ -5,6 +5,7 @@ import com.vetManagement.spring.core.config.Result;
 import com.vetManagement.spring.core.config.ResultData;
 import com.vetManagement.spring.core.config.ResultHelper;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
+import com.vetManagement.spring.core.modelMapper.ImodelMapperService;
 import com.vetManagement.spring.dto.request.Customer.CustomerSaveRequest;
 import com.vetManagement.spring.dto.request.Customer.CustomerUpdateRequest;
 import com.vetManagement.spring.dto.request.Doctor.DoctorSaveRequest;
@@ -29,9 +30,9 @@ import java.util.List;
 public class CustomerController {
 
     private final ICustomerService iCustomerService;
-    private final ModelMapper modelMapper;
+    private final ImodelMapperService modelMapper;
 
-    public CustomerController(ICustomerService iCustomerService, ModelMapper modelMapper) {
+    public CustomerController(ICustomerService iCustomerService, ImodelMapperService modelMapper) {
         this.iCustomerService = iCustomerService;
         this.modelMapper = modelMapper;
     }
@@ -40,19 +41,19 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<CustomerResponse> saveCustomer(@RequestBody @Validated CustomerSaveRequest customerSaveRequest){
 
-        Customer customer = modelMapper.map(customerSaveRequest, Customer.class);
+        Customer customer = modelMapper.forRequest().map(customerSaveRequest, Customer.class);
 
         try {
             Customer savedCustomer = iCustomerService.save(customer);
 
-            CustomerResponse customerResponse = this.modelMapper.map(savedCustomer, CustomerResponse.class);
+            CustomerResponse customerResponse = this.modelMapper.forResponse().map(savedCustomer, CustomerResponse.class);
 
             return ResultHelper.created(customerResponse);
 
         }catch (recordAlreadyExistException e){
             Customer existingCustomer = iCustomerService.get(e.getId());
 
-            CustomerResponse existingCustomerResponse  = this.modelMapper.map(existingCustomer, CustomerResponse.class);
+            CustomerResponse existingCustomerResponse  = this.modelMapper.forResponse().map(existingCustomer, CustomerResponse.class);
 
             return ResultHelper.recordAlreadyExistsError(e.getId(), existingCustomerResponse);
         }
@@ -62,7 +63,7 @@ public class CustomerController {
     public ResultData<CustomerResponse> get(@PathVariable("id") Long id) {
 
         Customer customer = this.iCustomerService.get(id);
-        CustomerResponse customerResponse = this.modelMapper.map(customer,CustomerResponse.class);
+        CustomerResponse customerResponse = this.modelMapper.forResponse().map(customer,CustomerResponse.class);
         return ResultHelper.success(customerResponse);
     }
 
@@ -74,7 +75,7 @@ public class CustomerController {
     ) {
         Page<Customer> customerPage = this.iCustomerService.cursor(page,pageSize);
         Page<CustomerResponse> customerResponsePage = customerPage
-                .map(customer -> this.modelMapper.map(customer,CustomerResponse.class));
+                .map(customer -> this.modelMapper.forResponse().map(customer,CustomerResponse.class));
         return ResultHelper.cursor(customerResponsePage);
     }
 
@@ -82,9 +83,9 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CustomerResponse> update(@Valid @RequestBody CustomerUpdateRequest customerUpdateRequest){
 
-        Customer updateCustomer = this.modelMapper.map(customerUpdateRequest, Customer.class);
+        Customer updateCustomer = this.modelMapper.forRequest().map(customerUpdateRequest, Customer.class);
         this.iCustomerService.update(updateCustomer);
-        return ResultHelper.success(this.modelMapper.map(updateCustomer, CustomerResponse.class));
+        return ResultHelper.success(this.modelMapper.forResponse().map(updateCustomer, CustomerResponse.class));
     }
 
     @DeleteMapping("/{id}")

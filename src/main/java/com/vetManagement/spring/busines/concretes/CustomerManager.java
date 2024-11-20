@@ -4,6 +4,7 @@ import com.vetManagement.spring.busines.abstracts.ICustomerService;
 import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
+import com.vetManagement.spring.core.modelMapper.ImodelMapperService;
 import com.vetManagement.spring.dao.CustomerRepository;
 import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.dto.response.CursorResponse;
@@ -23,11 +24,11 @@ import java.util.stream.Collectors;
 public class CustomerManager implements ICustomerService {
 
     private  final CustomerRepository customerRepository;
-    private final ModelMapper modelMapper;
 
-    public CustomerManager(CustomerRepository customerRepository,  ModelMapper modelMapper) {
+
+    public CustomerManager(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.modelMapper = modelMapper;
+        ;
     }
 
     @Override

@@ -19,4 +19,6 @@ public class VaccineSaveRequest {
 
     private LocalDate protectionFinishDate;
 
+    private Long animalId;
+
 }

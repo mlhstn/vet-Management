@@ -28,6 +28,7 @@ public class Vaccine {
 
     private LocalDate protectionFinishDate;
 
-    @ManyToMany(mappedBy = "vaccines") // Bağlantı tablosundaki ilişki
-    private Set<Animal> animals = new HashSet<>(); // Hayvan seti
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "animal_id")
+    private Animal animal;
 }

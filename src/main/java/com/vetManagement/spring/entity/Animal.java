@@ -39,15 +39,10 @@ public class Animal {
     @JoinColumn(name = "customer_id")  // Foreign key
     private Customer customer;
 
-    @ManyToMany
-    @JoinTable(
-            name = "animal_vaccine", // Bağlantı tablosu adı
-            joinColumns = @JoinColumn(name = "animal_id"), // Hayvan ID'si
-            inverseJoinColumns = @JoinColumn(name = "vaccine_id") // Aşı ID'si
-    )
+   @OneToMany(mappedBy = "animal",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Vaccine> vaccines = new HashSet<>();
 
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 
 }

@@ -16,4 +16,6 @@ public interface AnimalRepository extends JpaRepository<Animal,Long> {
 
 
     List<Animal> findByCustomerId(Long id);
+
+
 }

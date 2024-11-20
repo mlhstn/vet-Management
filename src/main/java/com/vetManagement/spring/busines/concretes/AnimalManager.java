@@ -4,44 +4,53 @@ import com.vetManagement.spring.busines.abstracts.IAnimalService;
 import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
+import com.vetManagement.spring.core.modelMapper.ImodelMapperService;
 import com.vetManagement.spring.dao.AnimalRepository;
+import com.vetManagement.spring.dao.VaccineRepository;
+import com.vetManagement.spring.dto.request.Animal.AnimalSaveRequest;
+import com.vetManagement.spring.dto.request.Vaccine.VaccineSaveRequest;
 import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.entity.Animal;
+import com.vetManagement.spring.entity.Vaccine;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class AnimalManager implements IAnimalService {
 
     private final AnimalRepository animalRepository;
-    private final ModelMapper modelMapper;
+    private final VaccineRepository vaccineRepository;
 
-    public AnimalManager(AnimalRepository animalRepository, ModelMapper modelMapper) {
+    public AnimalManager(AnimalRepository animalRepository,
+                         VaccineRepository vaccineRepository) {
         this.animalRepository = animalRepository;
-        this.modelMapper = modelMapper;
+        this.vaccineRepository = vaccineRepository;
     }
+
+    @Override
+    public Animal findById(Long id) {
+        return animalRepository.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
+    }
+
 
     @Override
     public Animal save(Animal animal) {
         Animal existingAnimal = animalRepository.findByName(animal.getName());
-
         if (existingAnimal != null) {
             // Eğer mevcut hayvan varsa hata
             throw new recordAlreadyExistException(existingAnimal.getId());
         }
         animal.setId(null);
         return animalRepository.save(animal);
-    }
-
-
-    public Animal findById(Long id) {
-        return animalRepository.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
     }
 
     @Override
@@ -110,6 +119,18 @@ public class AnimalManager implements IAnimalService {
                 animal.getDateOfBirth()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Animal getAnimalById(Long id) {
+        Optional<Animal> animal = animalRepository.findById(id);
+        return animal.orElse(null);
+    }
+
+
+
+
+
+
 
 }
 

@@ -1,5 +1,6 @@
 package com.vetManagement.spring.busines.abstracts;
 
+import com.vetManagement.spring.dto.request.Animal.AnimalSaveRequest;
 import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.entity.Animal;
 import org.springframework.data.domain.Page;
@@ -23,4 +24,8 @@ public interface IAnimalService {
     public List<AnimalResponse> getAllAnimalsSorted();
 
     List<AnimalResponse> getAnimalsByCustomerId(Long id);
+
+    Animal getAnimalById(Long id);
+
+    Animal findById(Long id);
 }
