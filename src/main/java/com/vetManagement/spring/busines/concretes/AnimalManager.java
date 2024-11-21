@@ -4,24 +4,16 @@ import com.vetManagement.spring.busines.abstracts.IAnimalService;
 import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
-import com.vetManagement.spring.core.modelMapper.ImodelMapperService;
 import com.vetManagement.spring.dao.AnimalRepository;
 import com.vetManagement.spring.dao.VaccineRepository;
-import com.vetManagement.spring.dto.request.Animal.AnimalSaveRequest;
-import com.vetManagement.spring.dto.request.Vaccine.VaccineSaveRequest;
 import com.vetManagement.spring.dto.response.Animal.AnimalResponse;
 import com.vetManagement.spring.entity.Animal;
-import com.vetManagement.spring.entity.Vaccine;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

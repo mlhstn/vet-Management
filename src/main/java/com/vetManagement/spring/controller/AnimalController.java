@@ -63,7 +63,6 @@ public class AnimalController {
         }
     }
 
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AnimalResponse> get(@PathVariable("id") Long id) {
