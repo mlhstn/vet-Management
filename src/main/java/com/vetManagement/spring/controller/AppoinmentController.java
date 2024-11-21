@@ -2,11 +2,6 @@ package com.vetManagement.spring.controller;
 
 import com.vetManagement.spring.busines.concretes.AppointmentManager;
 import com.vetManagement.spring.core.modelMapper.ImodelMapperService;
-import com.vetManagement.spring.core.modelMapper.ModelMapperConfig;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 
 
@@ -20,4 +15,6 @@ public class AppoinmentController {
         this.appointmentManager = appointmentManager;
         this.modelMapper = modelMapper;
     }
+
+
 }

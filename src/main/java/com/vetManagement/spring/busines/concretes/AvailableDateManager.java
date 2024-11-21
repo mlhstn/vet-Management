@@ -6,6 +6,7 @@ import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.dao.AvailableDateRepository;
 import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.AvailableDate;
+import com.vetManagement.spring.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,8 +35,10 @@ public class AvailableDateManager implements IAvailableDateService {
     }
 
     @Override
-    public AvailableDate delete(Long id) {
-        return null;
+    public boolean delete(Long id) {
+        AvailableDate availableDate = this.get(id);
+        this.availableDateRepository.delete(availableDate);
+        return true;
     }
 
     @Override

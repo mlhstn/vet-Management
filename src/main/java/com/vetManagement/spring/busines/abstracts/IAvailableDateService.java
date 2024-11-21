@@ -12,7 +12,7 @@ public interface IAvailableDateService {
 
     AvailableDate update(AvailableDate availableDate);
 
-    AvailableDate delete(Long id);
+    boolean  delete(Long id);
 
     AvailableDate get(Long id);
 
