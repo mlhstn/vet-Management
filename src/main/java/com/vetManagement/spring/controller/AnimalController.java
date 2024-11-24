@@ -75,12 +75,12 @@ public class AnimalController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CursorResponse<AnimalResponse>> cursor(
-            @RequestParam(name = "page", required = false,defaultValue = "0") int page,
-            @RequestParam(name = "pageSize", required = false,defaultValue = "10") int pageSize
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {
-        Page<Animal> animalPage = this.iAnimalService.cursor(page,pageSize);
+        Page<Animal> animalPage = this.iAnimalService.cursor(page, pageSize);
         Page<AnimalResponse> animalResponsePage = animalPage
-                .map(animal -> this.modelMapper.forResponse().map(animal,AnimalResponse.class));
+                .map(animal -> this.modelMapper.forResponse().map(animal, AnimalResponse.class));
         return ResultHelper.cursor(animalResponsePage);
     }
 
@@ -95,10 +95,10 @@ public class AnimalController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") Long id){
+    public Result delete(@PathVariable("id") Long id) {
 
-       this.iAnimalService.delete(id);
-       return ResultHelper.ok();
+        this.iAnimalService.delete(id);
+        return ResultHelper.ok();
 
     }
 

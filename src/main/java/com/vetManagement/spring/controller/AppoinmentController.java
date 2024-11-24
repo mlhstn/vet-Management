@@ -12,7 +12,7 @@ public class AppoinmentController {
     private final ImodelMapperService modelMapper;
 
     public AppoinmentController(AppointmentManager appointmentManager, ImodelMapperService modelMapper) {
-        this.appointmentManager = appointmentManager;
+        this.appointmentManager = appointmentManager  ;
         this.modelMapper = modelMapper;
     }
 

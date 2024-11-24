@@ -27,5 +27,5 @@ public interface IAnimalService {
 
     Animal getAnimalById(Long id);
 
-  Animal findById(Long id);
+    Animal findById(Long id);
 }

@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,10 +38,10 @@ public class AnimalManager implements IAnimalService {
 
     @Override
     public Animal save(Animal animal) {
-        Animal existingAnimal = animalRepository.findByName(animal.getName());
-        if (existingAnimal != null) {
+        Animal animalName = animalRepository.findByName(animal.getName());
+        if (Objects.nonNull(animalName)) {
             // Eğer mevcut hayvan varsa hata
-            throw new recordAlreadyExistException(existingAnimal.getId());
+            throw new recordAlreadyExistException(animalName.getId());
         }
         animal.setId(null);
         return animalRepository.save(animal);
@@ -59,7 +61,7 @@ public class AnimalManager implements IAnimalService {
 
     @Override
     public Page<Animal> cursor(int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page,pageSize);
+        Pageable pageable = PageRequest.of(page, pageSize);
         return this.animalRepository.findAll(pageable);
     }
 
@@ -80,7 +82,7 @@ public class AnimalManager implements IAnimalService {
     @Override
     public List<AnimalResponse> getAllAnimalsSorted() {
 
-        List<Animal> animals = animalRepository.findAllByOrderByNameAsc(); // animalName'e göre sıralama
+        final List<Animal> animals = animalRepository.findAllByOrderByNameAsc(); // animalName'e göre sıralama
 
         // Animal entity'lerini AnimalResponse DTO'suna dönüştürüyoruz
         return animals.stream()
@@ -102,13 +104,13 @@ public class AnimalManager implements IAnimalService {
         List<Animal> animals = animalRepository.findByCustomerId(id);
 
         return animals.stream().map(animal -> new AnimalResponse(
-                animal.getId(),
-                animal.getName(),
-                animal.getSpecies(),
-                animal.getGender(),
-                animal.getBreed(),
-                animal.getColour(),
-                animal.getDateOfBirth()))
+                        animal.getId(),
+                        animal.getName(),
+                        animal.getSpecies(),
+                        animal.getGender(),
+                        animal.getBreed(),
+                        animal.getColour(),
+                        animal.getDateOfBirth()))
                 .collect(Collectors.toList());
     }
 
@@ -117,11 +119,6 @@ public class AnimalManager implements IAnimalService {
         Optional<Animal> animal = animalRepository.findById(id);
         return animal.orElse(null);
     }
-
-
-
-
-
 
 
 }

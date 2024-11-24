@@ -54,7 +54,9 @@ public class CustomerManager implements ICustomerService {
 
     @Override
     public Customer get(Long id) {
-
+        int x=15;
+        int a=12;
+        int y=a+x;
         return this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
     }
 
