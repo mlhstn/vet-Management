@@ -18,10 +18,12 @@ import com.vetManagement.spring.entity.Vaccine;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -102,6 +104,21 @@ public class VaccineController {
             return (ResultData<List<VaccineResponse>>) ResultHelper.recordNotFoundWithId(animalId);
         }
     }
+    @GetMapping("/by-date-range")
+    public ResultData<List<VaccineResponse>> getVaccinationsByDateRange(
+            @RequestParam("protectionStartDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate protectionStartDate,
+            @RequestParam("protectionFinishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate protectionFinishDate
+            ){
+
+            List<Vaccine> vaccines = iVaccineService.getVaccinationsByDateRange(protectionStartDate,protectionFinishDate);
+        List<VaccineResponse> vaccineResponses = vaccines.stream()
+                .map(vaccine -> modelMapper.forResponse().map(vaccine, VaccineResponse.class))
+                .toList();
+
+        return (ResultData<List<VaccineResponse>>) ResultHelper.ok(vaccineResponses);
+
+    }
+
 }
 
 

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class DoctorSaveRequest {
-    @NotNull(message = "please write a name")
+
     private String name;
 
     private String phone;

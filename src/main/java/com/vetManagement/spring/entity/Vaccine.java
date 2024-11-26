@@ -28,7 +28,7 @@ public class Vaccine {
 
     private LocalDate protectionFinishDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "animal_id")
     private Animal animal;
 }

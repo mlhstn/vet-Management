@@ -4,6 +4,7 @@ import com.vetManagement.spring.entity.Doctor;
 import com.vetManagement.spring.entity.Vaccine;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IVaccineService {
@@ -19,5 +20,9 @@ public interface IVaccineService {
     boolean delete(Long id);
 
     List<Vaccine> getVaccinesByAnimalId(Long animalId);
+
+    boolean canAddVaccine(Vaccine vaccine);
+
+    List<Vaccine> getVaccinationsByDateRange(LocalDate protectionStartDate, LocalDate protectionFinishDate);
 
 }

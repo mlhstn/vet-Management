@@ -2,6 +2,7 @@ package com.vetManagement.spring.busines.concretes;
 
 import com.vetManagement.spring.busines.abstracts.IVaccineService;
 import com.vetManagement.spring.core.config.Msg;
+import com.vetManagement.spring.core.config.ResultHelper;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.dao.VaccineRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -27,11 +29,16 @@ public class VaccineManager implements IVaccineService {
     }
 
     @Override
+    public boolean canAddVaccine(Vaccine vaccine) {
+        LocalDate today = LocalDate.now(); List<Vaccine> existingVaccines = vaccineRepository.
+        findByCodeAndNameAndAnimalIdAndProtectionFinishDateAfter( vaccine.getCode(), vaccine.getName(), vaccine.getAnimal().getId(), today);
+        return existingVaccines.isEmpty();
+    }
+
     public Vaccine save(Vaccine vaccine) {
-        if (vaccineRepository.findByName(vaccine.getName()) != null){
-            throw new recordAlreadyExistException(vaccineRepository.findByName(vaccine.getName()).getId());
-        }
-        vaccine.setId(null);
+        if (!canAddVaccine(vaccine)) {
+            throw new recordAlreadyExistException(vaccine.getId());
+        } vaccine.setId(null);
         return vaccineRepository.save(vaccine);
     }
 
@@ -65,4 +72,11 @@ public class VaccineManager implements IVaccineService {
 
         return vaccineRepository.findByAnimalId(animalId);
     }
+
+    @Override
+    public List<Vaccine> getVaccinationsByDateRange(LocalDate protectionStartDate, LocalDate protectionFinishDate) {
+        return vaccineRepository.findByProtectionFinishDateBetween(protectionStartDate, protectionFinishDate);
+    }
+
+
 }
