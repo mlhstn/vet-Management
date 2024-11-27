@@ -1,5 +1,6 @@
 package com.vetManagement.spring.busines.abstracts;
 
+import com.vetManagement.spring.dto.request.Appointment.AppointmentUpdateRequest;
 import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Appointment;
 

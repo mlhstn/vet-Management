@@ -1,26 +1,21 @@
 package com.vetManagement.spring.controller;
 
 import com.vetManagement.spring.busines.abstracts.IVaccineService;
-import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.Result;
 import com.vetManagement.spring.core.config.ResultData;
 import com.vetManagement.spring.core.config.ResultHelper;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
-import com.vetManagement.spring.core.config.exception.recordAlreadyExistException;
 import com.vetManagement.spring.core.modelMapper.ImodelMapperService;
 import com.vetManagement.spring.dao.AnimalRepository;
 import com.vetManagement.spring.dto.request.Vaccine.VaccineSaveRequest;
 import com.vetManagement.spring.dto.request.Vaccine.VaccineUpdateRequest;
 import com.vetManagement.spring.dto.response.CursorResponse;
 import com.vetManagement.spring.dto.response.Vaccine.VaccineResponse;
-import com.vetManagement.spring.entity.Animal;
 import com.vetManagement.spring.entity.Vaccine;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;

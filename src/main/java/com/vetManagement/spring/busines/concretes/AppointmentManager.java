@@ -4,24 +4,31 @@ import com.vetManagement.spring.busines.abstracts.IAppointmentService;
 import com.vetManagement.spring.core.config.Msg;
 import com.vetManagement.spring.core.config.exception.NotFoundException;
 import com.vetManagement.spring.core.modelMapper.ModelMapperConfig;
+import com.vetManagement.spring.dao.AnimalRepository;
 import com.vetManagement.spring.dao.AppointmentRepository;
-import com.vetManagement.spring.entity.Animal;
-import com.vetManagement.spring.entity.Appointment;
-import com.vetManagement.spring.entity.AvailableDate;
+import com.vetManagement.spring.dao.DoctorRepository;
+import com.vetManagement.spring.dto.request.Appointment.AppointmentUpdateRequest;
+import com.vetManagement.spring.entity.*;
 import org.springframework.stereotype.Service;
+
+import javax.print.Doc;
 
 @Service
 public class AppointmentManager implements IAppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final AnimalRepository animalRepository;
 
-    public AppointmentManager(AppointmentRepository appointmentRepository) {
+    public AppointmentManager(AppointmentRepository appointmentRepository, DoctorRepository doctorRepository, AnimalRepository animalRepository) {
         this.appointmentRepository = appointmentRepository;
+        this.doctorRepository = doctorRepository;
+        this.animalRepository = animalRepository;
     }
 
     @Override
     public Appointment save(Appointment appointment) {
-        return null;
+        return appointmentRepository.save(appointment);
     }
 
     @Override
