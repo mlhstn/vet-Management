@@ -1,10 +1,10 @@
-Vet Management System
+**Vet Management System**
 
-Project Description
+**Project Description**
 
 The Vet Management System is an application designed to help veterinary clinics manage appointments and patient records efficiently. This system allows veterinarians to store information about doctors, customers, and animals, manage appointments, and track the medical history of animals.
 
-Features
+**Features**
 
 Doctor Management: Register and update veterinarian information.
 
@@ -18,7 +18,7 @@ Appointment Management: Schedule appointments based on doctors' availability and
 
 Filtering and Search: Filter appointments by doctor, animal, and date.
 
-Technologies Used
+**Technologies Used**
 
 Java Spring Boot (For backend development)
 
